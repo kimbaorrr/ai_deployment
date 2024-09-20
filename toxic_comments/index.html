@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân tích mức độ độc hại của văn bản</title>
+    <link href="assets/css/style.min.css" rel="stylesheet">
+    <script src="https://jsdelivr.b-cdn.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+</head>
+<body class="flex justify-center min-h-screen antialiased text-black bg-gray-400 dark:bg-gray-900 dark:text-white items-center">
+        <div class="block bg-white border-b border-gray-200 rounded-lg shadow-md max-w-sm xl:max-w-lg w-full dark:bg-gray-800 dark:border-gray-700">
+            <header class="bg-blue-600 dark:bg-blue-800 p-0 m-0 border-0 rounded-t-lg">
+                <h5 class="text-lg font-bold tracking-tight text-white dark:text-white p-4">Phân tích mức độ độc hại của văn bản</h5>
+            </header>
+            <div id="chatbox" class="p-4 h-96 overflow-y-auto">
+                
+                <div class="mb-2 text-right">
+                    <p class="bg-blue-600 text-white rounded-lg py-2 px-4 inline-block">Xin chào</p>
+                </div>
+                <div class="mb-2 text-right">
+                  <p class="bg-blue-600 text-white rounded-lg py-2 px-4 inline-block">Hãy để tôi phân tích giúp bạn !</p>
+                </div>          
+            </div>
+            <div class="p-4 border-t flex">
+                <input type="text" id="noiDung" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 duration-75 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" autofocus placeholder="Nhập nội dung tại đây....">
+                <button type="button" id="guiDuLieu" class="text-white bg-blue-600 hover:bg-blue-800 font-medium text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-r-lg duration-300">Gửi</button>
+            </div>
+            <footer class="text-center w-full mx-auto pb-1">
+                <p class="text-gray-400 text-xs dark:text-gray-200">&copy; 2024 BaoIT. All right reserveds.</p>
+            </footer>
+        </div>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+            <script>
+                let results_data;
+                function send_text(input_text) {
+                    $.ajax({
+                        url: 'https://api.baoit.xyz/ai/toxic_comment',
+                        type: 'GET',
+                        data: { text: input_text },
+                        success: function(response) {
+                            results_data = JSON.parse(response);
+                            display_results();
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Lỗi:', status, error);
+                            return;
+                        }
+                    });
+                }
+
+                function loadingText(status) {
+                    const loadingText = $(`
+                    <div class="mb-2 loadingText">
+                        <p class="py-2 px-4 text-blue-800 bg-blue-200 animate-pulse dark:bg-blue-900 dark:text-blue-200 rounded-lg inline-block">Đang phân tích ...</p>
+                      </div>
+                    `);
+                    if (status === 'show') {
+                        $("#chatbox").append(loadingText).last();
+                    } else {
+                        $('.loadingText').hide();
+                    }  
+                }
+
+                function display_results() {
+                    let colors = ['blue', 'red', 'green', 'yellow', 'indigo', 'purple'];
+                    let i = 0;
+                    if (results_data && Object.keys(results_data).length > 0) {
+                        let $botRep = $('<div>', { class: 'mb-2 botRep' }).appendTo('#chatbox');
+                        let $botRep2 = $('<div>', { class: 'w-1/2 py-2 px-4 rounded-lg space-y-2 bg-gray-200 botRep2' }).appendTo($botRep);
+                            
+                        $.each(results_data, function (model_name, acc) {
+                            let color = colors[i];
+                            let acc_percent = parseFloat(acc * 100).toFixed(2);
+                            let tieuDe = (model_name === Object.keys(results_data)[0]) ? '<p class="text-left font-bold">Kết quả phân tích</p>' : '';
+
+                            let output_body = `
+                                ${tieuDe}
+                                <div>
+                                    <p class="italic font-medium" style="font-size: 14px;">${model_name}</p>
+                                    <div class="w-full bg-gray-300 rounded-full dark:bg-gray-700">
+                                        <div class="bg-${color}-600 text-xs font-medium text-${color}-100 text-center leading-none rounded-full" style="width: ${acc_percent}%">
+                                            ${acc_percent}%
+                                        </div>
+                                    </div>
+                                </div>`;
+                            $botRep2.append(output_body);
+                            i += 1;
+                        });
+                    }
+                }
+            
+                $('#guiDuLieu').click(function() {
+                    let text = $('#noiDung').val();
+                    if (text.trim() !== '') {
+                        let user_input = `
+                        <div class="mb-2 text-right">
+                            <p class="bg-blue-600 text-white rounded-lg py-2 px-4 inline-block">${text}</p>
+                        </div>`;
+                    
+                        $('#chatbox').append(user_input);
+                        loadingText('show');
+                        send_text(text);
+                        loadingText('hide');
+                    } else {
+                        alert('Chưa nhập nội dung !');
+                    }
+                    
+                });
+            </script>
+            
+            
+</body>
+</html>
