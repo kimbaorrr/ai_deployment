@@ -34,7 +34,7 @@
         function send_text(input_text) {
             loadingText('show');
             $.ajax({
-                url: 'https://api.baoit.xyz/ai/toxic_comment',
+                url: 'https://api.baoit.xyz/ai/toxic_comments',
                 type: 'GET',
                 data: { text: input_text },
                 success: function(response) {
