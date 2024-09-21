@@ -33,25 +33,22 @@
     <script>
         function send_text(input_text) {
             loadingText('show');
-            setTimeout(() => {
-                $.ajax({
-                    url: 'https://api.baoit.xyz/ai/toxic_comments',
-                    type: 'GET',
-                    data: { text: input_text },
-                    success: function(response) {
-                        results_data = JSON.parse(response);
-                        display_results();
-                        scrollChatbox();
-                        loadingText('hide');
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Không thể kết nối máy chủ !');
-                        scrollChatbox();
-                        loadingText('hide');
-                    }
-                });
-            }, 1500);
-            
+            $.ajax({
+                url: 'https://api.baoit.xyz/ai/toxic_comments',
+                type: 'GET',
+                data: { text: input_text },
+                success: function(response) {
+                    results_data = JSON.parse(response);
+                    display_results();
+                    scrollChatbox();
+                    loadingText('hide');
+                },
+                error: function(xhr, status, error) {
+                    alert('Không thể kết nối máy chủ !');
+                    scrollChatbox();
+                    loadingText('hide');
+                }
+            });   
         }
 
         function loadingText(status) {
