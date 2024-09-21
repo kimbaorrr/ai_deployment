@@ -32,7 +32,6 @@
 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
             <script>
-                let results_data;
                 function send_text(input_text) {
                     loadingText('show');
                     $.ajax({
@@ -92,24 +91,35 @@
                         });
                     }
                 }
-            
-                $('#guiDuLieu').click(function() {
-                    const text = $('#noiDung').val();
-                    if (text.trim() !== '') {
-                        let user_input = `
-                        <div class="mb-2 text-right">
-                            <p class="bg-blue-600 text-white rounded-lg py-2 px-4 inline-block">${text}</p>
-                        </div>`;
-                    
-                        $('#chatbox').append(user_input);
+
+                $(document).ready(function () {
+                    let results_data;
+                
+                    $('#guiDuLieu').click(function() {
+                        const text = $('#noiDung').val();
+                        if (text.trim() !== '') {
+                            let user_input = `
+                            <div class="mb-2 text-right">
+                                <p class="bg-blue-600 text-white rounded-lg py-2 px-4 inline-block">${text}</p>
+                            </div>`;
                         
-                        send_text(text);
+                            $('#chatbox').append(user_input);
+                            
+                            send_text(text);
+                            
+                        } else {
+                            alert('Chưa nhập nội dung !');
+                        }
                         
-                    } else {
-                        alert('Chưa nhập nội dung !');
-                    }
-                    
-                });
+                    });
+
+                    $('#noiDung').keypress(function(e) {
+                        // Sự kiện phát hiện nhấn Enter
+                        if (e.which == 13) {
+                            $('#guiDuLieu').click();
+                        }
+                    });
+                }) 
             </script>
             
             
