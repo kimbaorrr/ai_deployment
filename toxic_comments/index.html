@@ -34,6 +34,7 @@
             <script>
                 let results_data;
                 function send_text(input_text) {
+                    loadingText('show');
                     $.ajax({
                         url: 'https://api.baoit.xyz/ai/toxic_comment',
                         type: 'GET',
@@ -41,12 +42,14 @@
                         success: function(response) {
                             results_data = JSON.parse(response);
                             display_results();
+                            loadingText('hide');
                         },
                         error: function(xhr, status, error) {
-                            alert('Lỗi:', status, error);
-                            return;
+                            alert('Không thể kết nối máy chủ !');
+                            loadingText('hide');
                         }
                     });
+                    
                 }
 
                 function loadingText(status) {
@@ -99,9 +102,9 @@
                         </div>`;
                     
                         $('#chatbox').append(user_input);
-                        loadingText('show');
+                        
                         send_text(text);
-                        loadingText('hide');
+                        
                     } else {
                         alert('Chưa nhập nội dung !');
                     }
