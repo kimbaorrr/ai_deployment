@@ -33,22 +33,25 @@
     <script>
         function send_text(input_text) {
             loadingText('show');
-            $.ajax({
-                url: 'https://api.baoit.xyz/ai/toxic_comments',
-                type: 'GET',
-                data: { text: input_text },
-                success: function(response) {
-                    results_data = JSON.parse(response);
-                    display_results();
-                    scrollChatbox();
-                    loadingText('hide');
-                },
-                error: function(xhr, status, error) {
-                    alert('Không thể kết nối máy chủ !');
-                    scrollChatbox();
-                    loadingText('hide');
-                }
-            });
+            setTimeout(() => {
+                $.ajax({
+                    url: 'https://api.baoit.xyz/ai/toxic_comments',
+                    type: 'GET',
+                    data: { text: input_text },
+                    success: function(response) {
+                        results_data = JSON.parse(response);
+                        display_results();
+                        scrollChatbox();
+                        loadingText('hide');
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Không thể kết nối máy chủ !');
+                        scrollChatbox();
+                        loadingText('hide');
+                    }
+                });
+            }, 1500);
+            
         }
 
         function loadingText(status) {
@@ -72,10 +75,10 @@
         function display_results() {
             const colors = ['blue', 'red', 'green', 'yellow', 'indigo', 'purple'];
             let i = 0;
+            const $botRep = $('<div>', { class: 'mb-2 botRep' }).appendTo('#chatbox');
+            const $botRep2 = $('<div>', { class: 'w-1/2 py-2 px-4 rounded-lg space-y-2 bg-gray-200 botRep2' }).appendTo($botRep);
             if (results_data && Object.keys(results_data).length > 0) {
-                const $botRep = $('<div>', { class: 'mb-2 botRep' }).appendTo('#chatbox');
-                const $botRep2 = $('<div>', { class: 'w-1/2 py-2 px-4 rounded-lg space-y-2 bg-gray-200 botRep2' }).appendTo($botRep);
-
+                
                 $.each(results_data, function (model_name, acc) {
                     let color = colors[i];
                     const acc_percent = parseFloat(acc * 100).toFixed(2);
@@ -94,6 +97,8 @@
                     $botRep2.append(output_body);
                     i += 1;
                 });
+            } else {
+                $botRep2.append(`<p class="text-black">Không có kết quả trả về.!</p>`)
             }
         }
 
