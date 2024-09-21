@@ -66,15 +66,15 @@
                 }
 
                 function display_results() {
-                    let colors = ['blue', 'red', 'green', 'yellow', 'indigo', 'purple'];
+                    const colors = ['blue', 'red', 'green', 'yellow', 'indigo', 'purple'];
                     let i = 0;
                     if (results_data && Object.keys(results_data).length > 0) {
-                        let $botRep = $('<div>', { class: 'mb-2 botRep' }).appendTo('#chatbox');
-                        let $botRep2 = $('<div>', { class: 'w-1/2 py-2 px-4 rounded-lg space-y-2 bg-gray-200 botRep2' }).appendTo($botRep);
+                        const $botRep = $('<div>', { class: 'mb-2 botRep' }).appendTo('#chatbox');
+                        const $botRep2 = $('<div>', { class: 'w-1/2 py-2 px-4 rounded-lg space-y-2 bg-gray-200 botRep2' }).appendTo($botRep);
                             
                         $.each(results_data, function (model_name, acc) {
                             let color = colors[i];
-                            let acc_percent = parseFloat(acc * 100).toFixed(2);
+                            const acc_percent = parseFloat(acc * 100).toFixed(2);
                             let tieuDe = (model_name === Object.keys(results_data)[0]) ? '<p class="text-left font-bold">Kết quả phân tích</p>' : '';
 
                             let output_body = `
@@ -94,7 +94,7 @@
                 }
             
                 $('#guiDuLieu').click(function() {
-                    let text = $('#noiDung').val();
+                    const text = $('#noiDung').val();
                     if (text.trim() !== '') {
                         let user_input = `
                         <div class="mb-2 text-right">
