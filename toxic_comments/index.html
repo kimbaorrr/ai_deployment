@@ -32,26 +32,34 @@
     <script src="https://jsdelivr.b-cdn.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script>
         function send_text(input_text) {
+            /**
+            Gọi API gửi nội dung & nhận kết quả trả về dạng JSON
+            */
             loadingText('show');
             $.ajax({
                 url: 'https://api.baoit.xyz/ai/toxic_comments',
                 type: 'GET',
                 data: { text: input_text },
+                dataType: 'json',
                 success: function(response) {
-                    results_data = JSON.parse(response);
+                    results_data = response;
                     display_results();
                     scrollChatbox();
-                    loadingText('hide');
                 },
-                error: function(xhr, status, error) {
+                error: () => {
                     alert('Không thể kết nối máy chủ !');
-                    scrollChatbox();
+                },
+                complete: () => {
                     loadingText('hide');
+                    scrollChatbox();
                 }
             });   
         }
 
         function loadingText(status) {
+            /**
+            Ẩn/Hiện "Đang phân tích..."
+            */
             const loadingText = $(`
                 <div class="mb-2 loadingText">
                     <p class="py-2 px-4 text-blue-800 bg-blue-200 animate-pulse dark:bg-blue-900 dark:text-blue-200 rounded-lg inline-block">Đang phân tích ...</p>
@@ -65,11 +73,17 @@
         }
         
         function scrollChatbox() {
+            /**
+            Cuộn Chatbox
+            */
             var chatbox = $('#chatbox');
             chatbox.scrollTop(chatbox.prop("scrollHeight"));
         }
         
         function display_results() {
+            /**
+            Hiện kết quả lên DOM
+            */
             const colors = ['blue', 'red', 'green', 'yellow', 'indigo', 'purple'];
             let i = 0;
             const $botRep = $('<div>', { class: 'mb-2 botRep' }).appendTo('#chatbox');
@@ -77,11 +91,11 @@
             if (results_data && Object.keys(results_data).length > 0) {
                 
                 $.each(results_data, function (model_name, acc) {
-                    let color = colors[i];
+                    const color = colors[i];
                     const acc_percent = parseFloat(acc * 100).toFixed(2);
-                    let tieuDe = (model_name === Object.keys(results_data)[0]) ? '<p class="text-left font-bold">Kết quả phân tích</p>' : '';
+                    const tieuDe = (model_name === Object.keys(results_data)[0]) ? '<p class="text-left font-bold">Kết quả phân tích</p>' : '';
 
-                    let output_body = `
+                    const output_body = `
                         ${tieuDe}
                         <div>
                             <p class="italic font-medium" style="font-size: 14px;">${model_name}</p>
@@ -105,7 +119,7 @@
             $('#guiDuLieu').click(function() {
                 const text = $('#noiDung').val();
                 if (text.trim() !== '') {
-                    let user_input = `
+                    const user_input = `
                         <div class="mb-2 text-right">
                             <p class="bg-blue-600 text-white rounded-lg py-2 px-4 inline-block">${text}</p>
                         </div>`;
@@ -117,6 +131,9 @@
             });
 
             $('#noiDung').keypress(function(e) {
+                /**
+                Sự kiện nhấn Enter sau khi nhập xong nội dung
+                */
                 if (e.which == 13) {
                     $('#guiDuLieu').click();
                 }
