@@ -21,7 +21,7 @@
             </div>          
         </div>
         <div class="p-4 border-t flex">
-            <input type="text" id="noiDung" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 duration-75 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" autofocus placeholder="Nhập nội dung tại đây....">
+            <input type="text" id="noiDung" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:border-blue-600 block w-full p-2.5 duration-75 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" autofocus placeholder="Nhập nội dung tại đây....">
             <button type="button" id="guiDuLieu" class="text-white bg-blue-600 hover:bg-blue-800 font-medium text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-r-lg duration-300">Gửi</button>
         </div>
         <footer class="text-center w-full mx-auto pb-1">
@@ -62,7 +62,10 @@
             */
             const loadingText = $(`
                 <div class="mb-2 loadingText">
-                    <p class="py-2 px-4 text-blue-800 bg-blue-200 animate-pulse dark:bg-blue-900 dark:text-blue-200 rounded-lg inline-block">Đang phân tích ...</p>
+                    <p class="py-2 px-4 text-blue-800 bg-blue-200 animate-pulse dark:bg-blue-900 dark:text-blue-200 rounded-lg inline-block">
+                        Đang phân tích
+                        <img class="inline-block" style="margin-top: 5px;" src="https://cdn.pixabay.com/animation/2024/04/02/07/57/07-57-40-974_512.gif" width="20" height="20" />
+                    </p>
                 </div>
             `);
             if (status === 'show') {
