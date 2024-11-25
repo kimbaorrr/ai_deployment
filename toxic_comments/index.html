@@ -42,9 +42,12 @@
                 data: { text: input_text },
                 dataType: 'json',
                 success: function(response) {
-                    results_data = response;
-                    display_results();
-                    scrollChatbox();
+                    if (response.success === "true") {
+                        results_data = response.data;
+                        display_results();
+                        scrollChatbox();
+                    }
+                    
                 },
                 error: () => {
                     alert('Không thể kết nối máy chủ !');
